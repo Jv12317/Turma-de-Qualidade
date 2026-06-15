@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Gestão Intersetorial - Indústria XYZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #0f1525;
+  --bg3: #151d30;
+  --card: #111827;
+  --border: #1e2d45;
+  --accent: #00a8ff;
+  --accent2: #0066cc;
+  --green: #00d68f;
+  --yellow: #ffaa00;
+  --red: #ff3d71;
+  --text: #e8edf5;
+  --text2: #8899b4;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-body: 'Exo 2', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== LOGIN ===== */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+#login-screen::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,168,255,0.08) 0%, transparent 70%);
+  top: -100px; left: -100px;
+  pointer-events: none;
+}
+
+#login-screen::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(0,214,143,0.06) 0%, transparent 70%);
+  bottom: -50px; right: -50px;
+  pointer-events: none;
+}
+
+.login-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0,168,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,168,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.login-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 420px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 60px rgba(0,168,255,0.1);
+  animation: fadeUp 0.6s ease;
+}
+
+/* MENU DE SETORES */
+.setores-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0,168,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,168,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.setores-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  width: 90%;
+  animation: fadeUp 0.6s ease;
+}
+
+.setores-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.setores-header .logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.setores-header .gear {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+
+.setores-header h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin: 0;
+}
+
+.setores-header p {
+  color: var(--text2);
+  font-size: 14px;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+.setores-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.setor-card {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,168,255,0.05);
+  position: relative;
+}
+
+.setor-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--red);
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255,61,113,0.4);
+  animation: pulse-badge 1.5s infinite;
+  font-family: var(--font-display);
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(255,61,113,0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 2px 12px rgba(255,61,113,0.6);
+  }
+}
+
+.setor-card:hover {
+  border-color: var(--accent);
+  background: var(--bg3);
+  transform: translateY(-4px);
+  box-shadow: 0 0 40px rgba(0,168,255,0.15);
+}
+
+.setor-card.active {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, rgba(0,168,255,0.1), rgba(0,102,204,0.1));
+  box-shadow: 0 0 50px rgba(0,168,255,0.25);
+}
+
+.setor-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.setor-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.setor-desc {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+.setor-card:hover .setor-title {
+  color: var(--accent);
+}
+
+.setores-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.btn-acesso {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 8px;
+  padding: 14px 40px;
+  color: white;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  min-width: 200px;
+}
+
+.btn-acesso:hover { opacity: 0.9; }
+.btn-acesso:active { transform: scale(0.98); }
+
+.btn-acesso:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.setor-selecionado {
+  color: var(--text2);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 12px;
+  letter-spacing: 1px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.login-logo .gear {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+
+.login-logo h1 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.login-subtitle {
+  color: var(--text2);
+  font-size: 13px;
+  margin-bottom: 36px;
+  padding-left: 56px;
+}
+
+.login-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.login-box input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.login-box input:focus { border-color: var(--accent); }
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  color: white;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.login-btn:hover { opacity: 0.9; }
+.login-btn:active { transform: scale(0.98); }
+
+.login-error {
+  color: var(--red);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 12px;
+  display: none;
+}
+
+/* ===== SISTEMA ===== */
+#sistema { display: none; }
+
+.header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-gear {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-title span { color: var(--accent); }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-date {
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 14px;
+  color: var(--text2);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* TABS */
+.tabs {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: none;
+  gap: 4px;
+}
+
+.tab {
+  padding: 12px 20px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border-left: none; border-right: none; border-top: none;
+}
+
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* CONTENT */
+.content { padding: 24px; }
+.tab-panel { display: none; animation: fadeIn 0.3s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* CARDS */
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+.grid-2-1 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 20px; }
+.grid-1-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title .icon { font-size: 16px; }
+
+/* KPI CARDS */
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kpi-value.green { color: var(--green); }
+.kpi-value.yellow { color: var(--yellow); }
+.kpi-value.red { color: var(--red); }
+.kpi-value.blue { color: var(--accent); }
+
+.kpi-label { color: var(--text2); font-size: 13px; }
+.kpi-target { color: var(--text2); font-size: 12px; margin-top: 4px; }
+
+/* GAUGE */
+.gauge-wrap { text-align: center; }
+.gauge-wrap .kpi-value { font-size: 32px; margin-bottom: 4px; }
+
+.gauge {
+  width: 80px; height: 40px;
+  position: relative;
+  margin: 0 auto 8px;
+  overflow: hidden;
+}
+
+.gauge-bg {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 8px solid var(--border);
+  position: absolute;
+  top: 0; left: 0;
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+}
+
+.gauge-fill {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 8px solid var(--green);
+  position: absolute;
+  top: 0; left: 0;
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  transform: rotate(-30deg);
+}
+
+/* PROGRESS BAR */
+.progress-wrap { margin-bottom: 8px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.progress-bar { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.progress-fill.green { background: var(--green); }
+.progress-fill.yellow { background: var(--yellow); }
+.progress-fill.red { background: var(--red); }
+.progress-fill.blue { background: var(--accent); }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th {
+  background: var(--bg3);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 12px; border-bottom: 1px solid var(--border); color: var(--text); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* STATUS BADGES */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.badge.green { background: rgba(0,214,143,0.15); color: var(--green); }
+.badge.yellow { background: rgba(255,170,0,0.15); color: var(--yellow); }
+.badge.blue { background: rgba(0,168,255,0.15); color: var(--accent); }
+.badge.red { background: rgba(255,61,113,0.15); color: var(--red); }
+
+/* ALERTS */
+.alert {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 3px solid;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.alert.red { background: rgba(255,61,113,0.08); border-color: var(--red); }
+.alert.yellow { background: rgba(255,170,0,0.08); border-color: var(--yellow); }
+.alert.green { background: rgba(0,214,143,0.08); border-color: var(--green); }
+.alert.blue { background: rgba(0,168,255,0.08); border-color: var(--accent); }
+.alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert-title { font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+
+/* STATUS ROW */
+.status-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 24px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text2);
+}
+.status-item { display: flex; align-items: center; gap: 5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot.green { background: var(--green); }
+.dot.yellow { background: var(--yellow); }
+.dot.red { background: var(--red); }
+
+/* MINI KPI ROW */
+.mini-kpis { display: flex; gap: 16px; margin: 12px 0; }
+.mini-kpi { text-align: center; flex: 1; }
+.mini-kpi .val { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+.mini-kpi .lbl { font-size: 11px; color: var(--text2); }
+
+/* CONTACT CARD */
+.contact { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.contact:last-child { border-bottom: none; }
+.contact-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px; flex-shrink: 0;
+}
+.contact-name { font-weight: 600; font-size: 14px; }
+.contact-role { font-size: 12px; color: var(--text2); }
+
+/* SECTION HEADER */
+.section-header {
+  background: linear-gradient(135deg, var(--bg3), var(--bg2));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-header .sh-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* CHART PLACEHOLDER */
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100px;
+  padding: 8px 0;
+}
+.bar-group { flex: 1; display: flex; gap: 3px; align-items: flex-end; }
+.bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  min-width: 8px;
+  transition: opacity 0.2s;
+}
+.bar:hover { opacity: 0.8; }
+.bar.blue { background: var(--accent); }
+.bar.green { background: var(--green); }
+.bar.yellow { background: var(--yellow); }
+.chart-labels { display: flex; gap: 8px; justify-content: space-around; font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+.chart-legend { display: flex; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* OP LIST */
+.op-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.op-item:last-child { border-bottom: none; }
+.op-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.op-dot.red { background: var(--red); }
+.op-dot.yellow { background: var(--yellow); }
+.op-dot.blue { background: var(--accent); }
+
+/* RECOGNITION */
+.recognition {
+  text-align: center;
+  padding: 16px;
+  background: var(--bg3);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.recognition .avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--yellow), #ff8800);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 22px;
+  margin: 0 auto 10px;
+}
+.recognition .name { font-weight: 700; font-size: 16px; }
+.recognition .role { font-size: 12px; color: var(--text2); margin-top: 3px; }
+.recognition .trophy { font-size: 28px; margin-bottom: 6px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ===== NOTIFICAÇÕES POP-UP ===== */
+#notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 400px;
+  width: 90%;
+  pointer-events: none;
+}
+
+.notification-popup {
+  background: var(--card);
+  border: 2px solid;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: slideInNotif 0.4s ease;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  position: relative;
+}
+
+@keyframes slideInNotif {
+  from {
+    opacity: 0;
+    transform: translateX(400px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.notification-popup.blink {
+  animation: blink-alert 0.6s infinite;
+  border-color: var(--red);
+  background: rgba(255,61,113,0.1);
+}
+
+@keyframes blink-alert {
+  0%, 49%, 100% {
+    opacity: 1;
+    border-color: var(--red);
+  }
+  50% {
+    opacity: 0.5;
+    border-color: var(--red);
+  }
+}
+
+.notification-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification-message {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.notification-responsible {
+  font-size: 12px;
+  color: var(--text2);
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.notification-responsible label {
+  color: var(--text2);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.notification-responsible input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: var(--text);
+  font-size: 11px;
+  flex: 1;
+  outline: none;
+}
+
+.notification-responsible input:focus {
+  border-color: var(--accent);
+}
+
+.notification-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text2);
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-close:hover {
+  color: var(--text);
+}
+
+.notification-popup.success {
+  border-color: var(--green);
+  background: rgba(0,214,143,0.1);
+}
+
+.notification-popup.success .notification-title {
+  color: var(--green);
+}
+
+.notification-popup.error {
+  border-color: var(--red);
+  background: rgba(255,61,113,0.1);
+}
+
+.notification-popup.error .notification-title {
+  color: var(--red);
+}
+
+.notification-popup.warning {
+  border-color: var(--yellow);
+  background: rgba(255,170,0,0.1);
+}
+
+.notification-popup.warning .notification-title {
+  color: var(--yellow);
+}
+
+.notification-popup.info {
+  border-color: var(--accent);
+  background: rgba(0,168,255,0.1);
+}
+
+.notification-popup.info .notification-title {
+  color: var(--accent);
+}
+
+/* ===== MEDIA QUERIES - RESPONSIVO ===== */
+
+/* TABLET (769px - 1024px) */
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-2-1 { grid-template-columns: 1fr 1fr; }
+  .grid-1-2 { grid-template-columns: 1fr 1fr; }
+  
+  .header-right {
+    gap: 12px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+    gap: 2px;
+    padding: 0 16px;
+  }
+  
+  .tab {
+    padding: 10px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .content { padding: 16px; }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .section-header {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  
+  .section-header h2 {
+    font-size: 16px;
+  }
+}
+
+/* MOBILE (até 768px) */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  /* LOGIN RESPONSIVO */
+  .login-box {
+    width: 90%;
+    max-width: 420px;
+    padding: 32px 24px;
+    margin: 20px;
+  }
+  
+  #login-screen::before {
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    left: -50px;
+  }
+  
+  #login-screen::after {
+    width: 200px;
+    height: 200px;
+    bottom: -30px;
+    right: -30px;
+  }
+  
+  .login-logo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .login-logo h1 {
+    font-size: 18px;
+  }
+  
+  .login-subtitle {
+    padding-left: 0;
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .login-box input {
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  
+  /* HEADER MOBILE */
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+    align-items: stretch;
+  }
+  
+  .header-left {
+    order: 1;
+  }
+  
+  .header-right {
+    order: 2;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-title {
+    font-size: 14px;
+  }
+  
+  .header-date {
+    font-size: 11px;
+  }
+  
+  .logout-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  
+  /* TABS MOBILE */
+  .tabs {
+    overflow-x: auto;
+    gap: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+  }
+  
+  .tab {
+    padding: 10px 12px;
+    font-size: 11px;
+    min-width: fit-content;
+    white-space: nowrap;
+    border-left: 1px solid var(--border);
+  }
+  
+  .tab:first-child {
+    border-left: none;
+  }
+  
+  /* GRIDS MOBILE - STACKED */
+  .grid-4,
+  .grid-3,
+  .grid-2,
+  .grid-2-1,
+  .grid-1-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  /* CONTENT */
+  .content {
+    padding: 12px 12px;
+  }
+  
+  .card {
+    padding: 14px;
+    border-radius: 10px;
+  }
+  
+  .card-title {
+    font-size: 11px;
+    margin-bottom: 12px;
+    gap: 6px;
+  }
+  
+  .card-title .icon {
+    font-size: 14px;
+  }
+  
+  /* KPI VALUES */
+  .kpi-value {
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+  
+  .kpi-label,
+  .kpi-target {
+    font-size: 11px;
+  }
+  
+  /* MINI KPIs MOBILE */
+  .mini-kpis {
+    gap: 8px;
+    margin: 10px 0;
+  }
+  
+  .mini-kpi .val {
+    font-size: 18px;
+  }
+  
+  .mini-kpi .lbl {
+    font-size: 10px;
+  }
+  
+  /* GAUGE MOBILE */
+  .gauge {
+    width: 60px;
+    height: 30px;
+  }
+  
+  .gauge-bg,
+  .gauge-fill {
+    width: 60px;
+    height: 60px;
+    border-width: 6px;
+  }
+  
+  .gauge-wrap .kpi-value {
+    font-size: 22px;
+  }
+  
+  /* TABLE MOBILE */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  table {
+    font-size: 11px;
+    min-width: 100%;
+  }
+  
+  th {
+    font-size: 9px;
+    padding: 8px 6px;
+  }
+  
+  td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+  
+  /* BADGES E ALERTS */
+  .badge {
+    padding: 2px 8px;
+    font-size: 9px;
+  }
+  
+  .alert {
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .alert-icon {
+    font-size: 14px;
+  }
+  
+  .alert-title {
+    font-size: 10px;
+  }
+  
+  /* SECTION HEADER */
+  .section-header {
+    gap: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .section-header .sh-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  
+  .section-header h2 {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  
+  /* CHART BARS */
+  .chart-bars {
+    height: 110px;
+    gap: 6px;
+  }
+  
+  .bar-group {
+    gap: 2px;
+  }
+  
+  .chart-labels {
+    font-size: 9px;
+    gap: 4px;
+  }
+  
+  .chart-legend {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .legend-item {
+    font-size: 10px;
+    gap: 4px;
+  }
+  
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* CONTACT CARD */
+  .contact {
+    gap: 8px;
+    padding: 6px 0;
+  }
+  
+  .contact-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .contact-name {
+    font-size: 12px;
+  }
+  
+  .contact-role {
+    font-size: 10px;
+  }
+  
+  /* RECOGNITION */
+  .recognition .avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+    margin: 0 auto 8px;
+  }
+  
+  .recognition .name {
+    font-size: 14px;
+  }
+  
+  .recognition .role {
+    font-size: 10px;
+  }
+  
+  .recognition .trophy {
+    font-size: 24px;
+  }
+  
+  /* STATUS ROW */
+  .status-row {
+    padding: 10px 12px;
+    font-size: 11px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .status-item {
+    gap: 4px;
+    font-size: 10px;
+  }
+  
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  /* OP ITEMS */
+  .op-item {
+    padding: 6px 0;
+    gap: 6px;
+    font-size: 12px;
+  }
+  
+  .op-dot {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 8px;
+  }
+  
+  .progress-label {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  
+  .progress-bar {
+    height: 6px;
+  }
+}
+
+/* MOBILE MUITO PEQUENO (até 480px) */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 24px 16px;
+    width: 95%;
+  }
+  
+  .login-logo h1 {
+    font-size: 16px;
+  }
+  
+  .kpi-value {
+    font-size: 24px;
+  }
+  
+  .header-title {
+    font-size: 12px;
+  }
+  
+  .tab {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+  
+  .card-title {
+    font-size: 10px;
+  }
+  
+  .mini-kpi .val {
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- SELEÇÃO DE SETORES -->
+<div id="login-screen">
+  <div class="setores-grid"></div>
+  <div class="setores-container">
+    <div class="setores-header">
+      <div class="logo-item">
+        <div class="gear">⚙️</div>
+        <h1>SISTEMA DE GESTÃO</h1>
+      </div>
+      <p>Indústria XYZ — Selecione um Setor para Acessar</p>
+    </div>
+
+    <div class="setores-group">
+      <div class="setor-card" onclick="selecionarSetor(this, 'pcp')" data-setor="pcp">
+        <div class="setor-badge" style="display:none;">0</div>
+        <div class="setor-icon">📋</div>
+        <div class="setor-title">PCP</div>
+        <div class="setor-desc">Planejamento e Controle de Produção</div>
+      </div>
+      <div class="setor-card" onclick="selecionarSetor(this, 'producao')" data-setor="producao">
+        <div class="setor-badge" style="display:none;">0</div>
+        <div class="setor-icon">🏗️</div>
+        <div class="setor-title">PRODUÇÃO</div>
+        <div class="setor-desc">Operações e Execução</div>
+      </div>
+      <div class="setor-card" onclick="selecionarSetor(this, 'qualidade')" data-setor="qualidade">
+        <div class="setor-badge" style="display:none;">0</div>
+        <div class="setor-icon">🛡️</div>
+        <div class="setor-title">QUALIDADE</div>
+        <div class="setor-desc">Conformidade e Garantia</div>
+      </div>
+      <div class="setor-card" onclick="selecionarSetor(this, 'logistica')" data-setor="logistica">
+        <div class="setor-badge" style="display:none;">0</div>
+        <div class="setor-icon">🚚</div>
+        <div class="setor-title">LOGÍSTICA</div>
+        <div class="setor-desc">Fluxo de Materiais</div>
+      </div>
+      <div class="setor-card" onclick="selecionarSetor(this, 'dashboard')" data-setor="dashboard">
+        <div class="setor-badge" style="display:none;">0</div>
+        <div class="setor-icon">🏭</div>
+        <div class="setor-title">DASHBOARD</div>
+        <div class="setor-desc">Visão Geral Intersetorial</div>
+      </div>
+      <div class="setor-card" onclick="selecionarSetor(this, 'resumoturno')" data-setor="resumoturno">
+        <div class="setor-badge" style="display:none;">0</div>
+        <div class="setor-icon">📊</div>
+        <div class="setor-title">RESUMO DO TURNO</div>
+        <div class="setor-desc">Resumo de Performance</div>
+      </div>
+    </div>
+
+    <div class="setor-selecionado" id="setor-selecionado">Nenhum setor selecionado</div>
+
+    <div class="setores-actions">
+      <button class="btn-acesso" id="btn-acesso" onclick="acessarSetor()" disabled>ACESSAR SISTEMA</button>
+      <button class="btn-acesso" style="background:transparent;border:1px solid var(--border);color:var(--text2);" id="btn-resetar" onclick="resetarSelecao()" style="display:none;">RESETAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- SISTEMA -->
+<div id="sistema">
+  <div id="notification-container"></div>
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-gear">⚙️</div>
+      <div>
+        <div class="header-title">SISTEMA DE GESTÃO <span>INTERSETORIAL</span></div>
+        <div style="font-size:11px;color:var(--text2);letter-spacing:1px;">INDÚSTRIA XYZ</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-date" id="relogio">--</div>
+      <button class="logout-btn" onclick="fazerLogout()">⏻ SAIR</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="mudarAba('resumoturno', this)">📊 RESUMO DO TURNO</button>
+    <button class="tab" onclick="mudarAba('dashboard', this)">🏭 DASHBOARD</button>
+    <button class="tab" onclick="mudarAba('pcp', this)">📋 PCP</button>
+    <button class="tab" onclick="mudarAba('producao', this)">🏗️ PRODUÇÃO</button>
+    <button class="tab" onclick="mudarAba('qualidade', this)">🛡️ QUALIDADE</button>
+    <button class="tab" onclick="mudarAba('logistica', this)">🚚 LOGÍSTICA</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="tab-panel active" id="tab-dashboard">
+    <div class="content">
+      <div class="grid-4">
+        <div class="card">
+          <div class="card-title"><span class="icon">👥</span> RH: ABSENTEÍSMO</div>
+          <div class="kpi-value green">3.5%</div>
+          <div class="kpi-target">Alvo: &lt; 4.0%</div>
+          <div class="kpi-label" style="margin-top:8px;">Total Colaboradores: 215</div>
+          <div style="margin-top:10px;">
+            <div class="progress-bar"><div class="progress-fill green" style="width:88%"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">📋</span> PCP: PLANEJAMENTO</div>
+          <div class="kpi-value yellow">78%</div>
+          <div style="margin:10px 0;">
+            <div class="progress-bar" style="height:12px;"><div class="progress-fill yellow" style="width:78%"></div></div>
+          </div>
+          <div class="kpi-label">Meta: 100% | Realizado: 78%</div>
+          <div class="kpi-target">OPs em Atraso: 3 | OPs Urgentes: 1</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🏗️</span> PRODUÇÃO: OEE GLOBAL</div>
+          <div class="kpi-value green">78%</div>
+          <div class="kpi-target" style="margin-top:8px;">Disponibilidade: 92%</div>
+          <div class="kpi-target">Desempenho: 88% | Qualidade: 98%</div>
+          <div style="margin-top:10px;">
+            <div class="progress-bar"><div class="progress-fill green" style="width:78%"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🛡️</span> QUALIDADE: CONFORMIDADE</div>
+          <div class="kpi-value green">99.1%</div>
+          <div class="kpi-target" style="margin-top:8px;">Alvo: &gt; 99%</div>
+          <div class="kpi-target">Scrap: 1.5% | Peças Rejeitadas: 15</div>
+          <div style="margin-top:10px;">
+            <div class="progress-bar"><div class="progress-fill green" style="width:99%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><span class="icon">👥</span> RH</div>
+              <div class="op-item"><span class="op-dot blue"></span><span>Vagas Abertas: <b>5</b></span></div>
+              <div class="op-item"><span class="op-dot yellow"></span><span>Próximo Treinamento: <b>NR12</b> (Amanhã 09:00)</span></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><span class="icon">📋</span> PCP: PLANEJAMENTO</div>
+              <div class="op-item"><span class="op-dot red"></span><span>OPs Críticas: <b>3</b></span></div>
+              <div class="op-item"><span class="op-dot yellow"></span><span>Fornecedores com Atraso: <b>2</b></span></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><span class="icon">🚚</span> LOGÍSTICA</div>
+              <div class="op-item"><span class="op-dot blue"></span><span>Cargas Hoje: <b>18</b></span></div>
+              <div class="op-item"><span class="op-dot red"></span><span>Cargas Atrasadas: <b>1</b></span></div>
+              <div class="op-item"><span class="op-dot yellow"></span><span>Armazém Ocupação: <b>82%</b></span></div>
+            </div>
+            <div class="card">
+              <div class="card-title"><span class="icon">🔧</span> MANUTENÇÃO</div>
+              <div class="op-item"><span class="op-dot green"></span><span>Preventivas: <b>8 (90%)</b></span></div>
+              <div class="op-item"><span class="op-dot yellow"></span><span>Corretivas: <b>2</b></span></div>
+              <div class="op-item"><span class="op-dot blue"></span><span>MTBF: <b>145h</b></span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">💡</span> PRODUÇÃO: SISTEMA DE MELHORIA CONTÍNUA</div>
+            <div style="display:flex;gap:24px;flex-wrap:wrap;">
+              <div><div class="kpi-value blue" style="font-size:28px;">12</div><div class="kpi-label">Kaizen Abertos</div></div>
+              <div><div class="kpi-value green" style="font-size:28px;">4</div><div class="kpi-label">Implementações/Mês</div></div>
+              <div><div class="kpi-value yellow" style="font-size:28px;">6</div><div class="kpi-label">Sugestões Novas</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title"><span class="icon">📦</span> ORDENS DE PRODUÇÃO (OP)</div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>OP #</th><th>PRODUTO</th><th>STATUS</th><th>QUANTIDADE</th><th>PROGRESSO</th></tr></thead>
+                <tbody>
+                  <tr><td>OP2026-045</td><td>Eixo Transmissão</td><td><span class="badge yellow">EM CURSO</span></td><td>500 un</td><td><div class="progress-bar"><div class="progress-fill yellow" style="width:60%"></div></div></td></tr>
+                  <tr><td>OP2026-046</td><td>Engrenagem B3</td><td><span class="badge red">AGUARDANDO</span></td><td>300 un</td><td><div class="progress-bar"><div class="progress-fill red" style="width:0%"></div></div></td></tr>
+                  <tr><td>OP2026-047</td><td>Suporte Motor</td><td><span class="badge blue">PROGRAMADO</span></td><td>800 un</td><td><div class="progress-bar"><div class="progress-fill blue" style="width:0%"></div></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="color:var(--red);">⚠️ ALERTAS INTERSETORIAIS</div>
+            <div class="alert yellow">
+              <div class="alert-icon">⚠️</div>
+              <div><div class="alert-title">PCP</div>Matéria-prima para OP#2026-046 com atraso (Prev. Logística: 16:30)</div>
+            </div>
+            <div class="alert yellow">
+              <div class="alert-icon">🔧</div>
+              <div><div class="alert-title">MANUTENÇÃO</div>Chamado #124 (Mecânica) - Linha 02 | Status: Em andamento</div>
+            </div>
+            <div class="alert green">
+              <div class="alert-icon">✅</div>
+              <div><div class="alert-title">RH</div>Novo operador para Linha 01 inicia amanhã</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-row">
+      <span style="font-weight:700;color:var(--text2);letter-spacing:1px;font-size:11px;">SETOR:</span>
+      <div class="status-item"><div class="dot green"></div>PROD</div>
+      <div class="status-item"><div class="dot green"></div>PCP</div>
+      <div class="status-item"><div class="dot green"></div>QUAL</div>
+      <div class="status-item"><div class="dot yellow"></div>MANU</div>
+      <div class="status-item"><div class="dot green"></div>LOG</div>
+      <div class="status-item"><div class="dot green"></div>MELH</div>
+    </div>
+  </div>
+
+  <!-- RESUMO DO TURNO -->
+  <div class="tab-panel active" id="tab-resumoturno">
+    <div class="content">
+      <div class="section-header">
+        <div class="sh-icon">📊</div>
+        <h2>RESUMO DO TURNO ATUAL</h2>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">⏰ INFORMAÇÕES DO TURNO</div>
+            <div style="font-size:16px;color:var(--accent);font-weight:700;margin-bottom:12px;" id="resumo-turno-info">Turno: Matutino | Horário: 06:00 - 14:00</div>
+            <div style="font-size:14px;color:var(--text);margin-bottom:16px;">
+              <div style="margin-bottom:8px;"><span style="color:var(--text2);">Data:</span> <b id="resumo-data">--</b></div>
+              <div style="margin-bottom:8px;"><span style="color:var(--text2);">Hora Atual:</span> <b id="resumo-hora">--</b></div>
+              <div><span style="color:var(--text2);">Tempo Decorrido:</span> <b id="resumo-tempo">0h 0m</b></div>
+            </div>
+          </div>
+          
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">📈 METAS DO TURNO</div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Produção Geral</span><span style="color:var(--green);">285/300 (95%)</span></div>
+              <div class="progress-bar"><div class="progress-fill green" style="width:95%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Qualidade</span><span style="color:var(--green);">99.2%</span></div>
+              <div class="progress-bar"><div class="progress-fill green" style="width:99%"></div></div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Segurança</span><span style="color:var(--green);">100%</span></div>
+              <div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">⚠️ PRINCIPAIS PROBLEMAS</div>
+            <div class="alert red" style="margin-bottom:8px;">
+              <div class="alert-icon">🔴</div>
+              <div><div class="alert-title">Falta de Matéria-Prima</div>Lote de Aço SAE 1020 para OP 4567</div>
+            </div>
+            <div class="alert yellow">
+              <div class="alert-icon">⚠️</div>
+              <div><div class="alert-title">Manutenção Pendente</div>Célula 3 com atraso na recalibração</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">🎯 PERFORMANCE POR SETOR</div>
+            <div class="mini-kpis">
+              <div class="mini-kpi"><div class="val green">95%</div><div class="lbl">Produção</div></div>
+              <div class="mini-kpi"><div class="val green">99.2%</div><div class="lbl">Qualidade</div></div>
+              <div class="mini-kpi"><div class="val green">100%</div><div class="lbl">Segurança</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PCP -->
+  <div class="tab-panel" id="tab-pcp">
+    <div class="content">
+      <div class="section-header">
+        <div class="sh-icon">📋</div>
+        <h2>ABA DO SETOR: PCP — PLANEJAMENTO E CONTROLE DE PRODUÇÃO</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">📊 VISÃO GERAL DO PLANEJAMENTO</div>
+          <div style="margin-bottom:12px;">
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Produção Planejada</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Aderência ao Plano</div>
+            </div>
+            <div class="chart-bars">
+              <div class="bar-group"><div class="bar blue" style="height:60px"></div><div class="bar green" style="height:95px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:80px"></div><div class="bar green" style="height:85px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:70px"></div><div class="bar green" style="height:90px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:90px"></div><div class="bar green" style="height:80px"></div></div>
+            </div>
+            <div class="chart-labels"><span>Linha A</span><span>Linha B</span><span>Linha C</span><span>Linha D</span></div>
+          </div>
+          <div class="op-item"><span class="op-dot blue"></span><span>Ordens de Produção Ativas: <b>18</b></span></div>
+          <div class="op-item"><span class="op-dot red"></span><span>OPs em Atraso: <b>2</b></span></div>
+          <div class="op-item"><span class="op-dot green"></span><span>Eficiência Geral (OEE): <b>88%</b></span></div>
+          <div style="margin-top:16px;">
+            <div class="card-title">⚠️ PRINCIPAIS OPs CRÍTICAS</div>
+            <div class="op-item"><span class="op-dot red"></span><span>OP# 4567 — Motor X | Status: <b>Em Atraso (-2h)</b></span></div>
+            <div class="op-item"><span class="op-dot yellow"></span><span>OP# 4568 — Bomba Y | Status: <b>Gargalo (Aguardando Qualidade)</b></span></div>
+            <div class="op-item"><span class="op-dot blue"></span><span>OP# 4569 — Peça Z | Status: <b>Programada (Início 16:30)</b></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📢 ALERTAS E COMUNICAÇÕES PCP</div>
+          <div class="alert red">
+            <div class="alert-icon">🔴</div>
+            <div><div class="alert-title">URGENTE: FALTA DE MATÉRIA-PRIMA (Linha B)</div>Lote de Aço SAE 1020 em falta para OP 4567. Previsão Logística: Indefinida. (acionar Compras)</div>
+          </div>
+          <div class="alert yellow">
+            <div class="alert-icon">⚠️</div>
+            <div><div class="alert-title">AVISO: MANUTENÇÃO PREVENTIVA (Célula 3)</div>Parada agendada para amanhã, 26/03 às 08:00. Impacto na OP 4568 estimado em -4h.</div>
+          </div>
+          <div class="alert green">
+            <div class="alert-icon">📋</div>
+            <div><div class="alert-title">COMUNICAÇÃO: NOVAS METAS DE TURNO</div>Metas de turno atualizadas para a semana. Disponível no portal e nos quadros de aviso.</div>
+          </div>
+          <div class="alert blue">
+            <div class="alert-icon">🗓️</div>
+            <div><div class="alert-title">LEMBRETE: REVISÃO DO PLANO MESTRE (S&OP)</div>Reunião quinzenal de revisão em 27/03 às 14:00. (confirmar presença)</div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">📈 INDICADORES CHAVE (KPIs) PCP</div>
+            <div class="mini-kpis">
+              <div class="mini-kpi"><div class="val green">96%</div><div class="lbl">Aderência ao Prazo</div></div>
+              <div class="mini-kpi"><div class="val blue">14</div><div class="lbl">Lead Time Médio (dias)</div></div>
+              <div class="mini-kpi"><div class="val yellow">8</div><div class="lbl">Inventário WIP (dias)</div></div>
+            </div>
+            <div style="margin-top:12px;">
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Cumprimento de Meta de Produção/Mês</span><span style="color:var(--green)">98%</span></div>
+                <div class="progress-bar"><div class="progress-fill green" style="width:98%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📞 CONTATOS ÚTEIS PCP</div>
+            <div class="contact">
+              <div class="contact-avatar">R</div>
+              <div><div class="contact-name">Roberto Silva</div><div class="contact-role">Coordenador PCP — ramal 201</div></div>
+            </div>
+            <div class="contact">
+              <div class="contact-avatar">A</div>
+              <div><div class="contact-name">Ana Paula</div><div class="contact-role">Analista PCP — ramal 202</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-row">
+      <div class="status-item"><div class="dot green"></div><b>SETOR STATUS: PCP: Operacional</b></div>
+    </div>
+  </div>
+
+  <!-- PRODUÇÃO -->
+  <div class="tab-panel" id="tab-producao">
+    <div class="content">
+      <div class="section-header">
+        <div class="sh-icon">🏗️</div>
+        <h2>ABA DO SETOR: PRODUÇÃO — OPERAÇÕES E EXECUÇÃO</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">📊 VISÃO GERAL DO TURNO ATUAL</div>
+          <div style="margin-bottom:12px;">
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Produção Realizada</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Planejada</div>
+            </div>
+            <div class="chart-bars">
+              <div class="bar-group"><div class="bar blue" style="height:80px"></div><div class="bar green" style="height:70px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:95px"></div><div class="bar green" style="height:80px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:110px"></div><div class="bar green" style="height:90px"></div></div>
+            </div>
+            <div class="chart-labels"><span>Linha A</span><span>Linha B</span><span>Linha C</span></div>
+          </div>
+          <div class="op-item"><span class="op-dot blue"></span><span>Meta Geral do Turno: <b>300 un</b></span></div>
+          <div class="op-item"><span class="op-dot green"></span><span>Realizado Atual: <b>285 un</b></span></div>
+          <div class="op-item"><span class="op-dot red"></span><span>Desvio: <b>-5%</b></span></div>
+          <div style="margin-top:8px;"><span class="badge green">✅ Dentro da Meta</span></div>
+          <div style="margin-top:16px;">
+            <div class="card-title">⚠️ PRINCIPAIS OPs EM CURSO</div>
+            <div class="op-item"><span class="op-dot green"></span><span>OP# 4567 — Motor X | 75% | Linha A | <b>João Silva</b></span></div>
+            <div class="op-item"><span class="op-dot yellow"></span><span>OP# 4568 — Bomba Y | 50% | Linha B | <b>Maria Santos</b></span></div>
+            <div class="op-item"><span class="op-dot blue"></span><span>OP# 4569 — Peça Z | 25% | Linha C | <b>Carlos Oliveira</b></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📢 ALERTAS E COMUNICAÇÕES PRODUÇÃO</div>
+          <div class="alert red">
+            <div class="alert-icon">🔴</div>
+            <div><div class="alert-title">URGENTE: FALTA DE COMPONENTE CRÍTICO (Linha A)</div>Lote de Rolamentos para OP 4567 em falta. Posição de Almoxarifado: Sem Previsão. (Contatar Logística)</div>
+          </div>
+          <div class="alert yellow">
+            <div class="alert-icon">⚠️</div>
+            <div><div class="alert-title">AVISO: MANUTENÇÃO PREVENTIVA (Célula 3)</div>Parada agendada para amanhã, 26/03 às 08:00. Impacto na Célula 3 e OP 4568.</div>
+          </div>
+          <div class="alert green">
+            <div class="alert-icon">📋</div>
+            <div><div class="alert-title">COMUNICAÇÃO: NOVAS METAS DE TURNO</div>Metas de turno atualizadas para a semana. Disponível no portal e nos quadros de aviso.</div>
+          </div>
+          <div class="alert blue">
+            <div class="alert-icon">🗓️</div>
+            <div><div class="alert-title">LEMBRETE: REUNIÃO DE PASSAGEM DE TURNO</div>Reunião de passagem de turno em 27/03 às 14:00. (confirmar presença)</div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">📈 INDICADORES CHAVE (KPIs) PRODUÇÃO</div>
+            <div style="text-align:center;margin-bottom:12px;">
+              <div class="kpi-value green" style="font-size:36px;">92%</div>
+              <div class="kpi-label">OEE Global</div>
+            </div>
+            <div class="mini-kpis">
+              <div class="mini-kpi"><div class="val green">92%</div><div class="lbl">OEE Global</div></div>
+              <div class="mini-kpi"><div class="val blue">94%</div><div class="lbl">Disponib. Máquinas</div></div>
+              <div class="mini-kpi"><div class="val green">98.5%</div><div class="lbl">Produtos S/ Defeito</div></div>
+            </div>
+            <div style="margin-top:8px;text-align:center;color:var(--text2);font-size:13px;">Scrap Mês: <b style="color:var(--yellow)">1.5%</b></div>
+          </div>
+          <div class="card">
+            <div class="card-title">📞 CONTATOS ÚTEIS PRODUÇÃO</div>
+            <div class="contact">
+              <div class="contact-avatar">J</div>
+              <div><div class="contact-name">João Batista</div><div class="contact-role">Coordenador de Produção — ramal 301</div></div>
+            </div>
+            <div class="contact">
+              <div class="contact-avatar">M</div>
+              <div><div class="contact-name">Maria Eduarda</div><div class="contact-role">Analista de Produção — ramal 302</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-row">
+      <div class="status-item"><div class="dot green"></div><b>SETOR STATUS: PRODUÇÃO: Operacional</b></div>
+    </div>
+  </div>
+
+  <!-- QUALIDADE -->
+  <div class="tab-panel" id="tab-qualidade">
+    <div class="content">
+      <div class="section-header">
+        <div class="sh-icon">🛡️</div>
+        <h2>ABA DO SETOR: QUALIDADE — CONFORMIDADE E GARANTIA</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">📊 VISÃO GERAL DO TURNO ATUAL</div>
+          <div style="margin-bottom:12px;">
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Qualidade Planejada</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Cumprimento de Meta</div>
+            </div>
+            <div class="chart-bars">
+              <div class="bar-group"><div class="bar blue" style="height:75px"></div><div class="bar green" style="height:100px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:80px"></div><div class="bar green" style="height:90px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:70px"></div><div class="bar green" style="height:95px"></div></div>
+            </div>
+            <div class="chart-labels"><span>Linha A</span><span>Linha B</span><span>Linha C</span></div>
+          </div>
+          <div class="op-item"><span class="op-dot blue"></span><span>Meta Geral do Turno: <b>99.5% Conformidade</b></span></div>
+          <div class="op-item"><span class="op-dot green"></span><span>Realizado Atual: <b>99.2%</b></span></div>
+          <div class="op-item"><span class="op-dot red"></span><span>Desvio: <b style="color:var(--red)">-0.3%</b></span></div>
+          <div style="margin-top:8px;"><span class="badge green">✅ Dentro da Meta</span></div>
+          <div style="margin-top:16px;">
+            <div class="card-title">⚠️ PRINCIPAIS OPs EM CURSO</div>
+            <div class="op-item"><span class="op-dot green"></span><span>OP# 4567 — Motor X | 75% | Resp: João Silva</span></div>
+            <div class="op-item"><span class="op-dot yellow"></span><span>OP# 4568 — Bomba Y | 50% | Resp: Maria Santos</span></div>
+            <div class="op-item"><span class="op-dot blue"></span><span>OP# 4569 — Peça Z | 25% | Resp: Carlos Oliveira</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📢 ALERTAS E COMUNICAÇÕES QUALIDADE</div>
+          <div class="alert red">
+            <div class="alert-icon">🔴</div>
+            <div><div class="alert-title">CRÍTICO: FALHA DE MEDIÇÃO — Célula 1</div>Desvio detectado no dimensional crítico da OP 4569. Parar produção e isolar lote. Contatar Engenharia e Manutenção.</div>
+          </div>
+          <div class="alert yellow">
+            <div class="alert-icon">⚠️</div>
+            <div><div class="alert-title">AVISO: RECALIBRAÇÃO PREVENTIVA (Célula 3)</div>Recalibração do micrômetro digital da Célula 3 agendada para amanhã às 08:00. Impacto na OP 4568.</div>
+          </div>
+          <div class="alert green">
+            <div class="alert-icon">📋</div>
+            <div><div class="alert-title">COMUNICAÇÃO: NOVAS DIRETRIZES DE INSPEÇÃO</div>Diretrizes de inspeção de entrada de material atualizadas. Disponível no portal e nos quadros de aviso.</div>
+          </div>
+          <div class="alert blue">
+            <div class="alert-icon">🗓️</div>
+            <div><div class="alert-title">LEMBRETE: REUNIÃO DE PASSAGEM DE TURNO</div>Reunião de passagem de turno em 27/03 às 14:00. (confirmar presença)</div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">📈 INDICADORES CHAVE (KPIs) QUALIDADE</div>
+            <div style="text-align:center;margin-bottom:8px;">
+              <div class="kpi-value green" style="font-size:36px;">99.2%</div>
+              <div class="kpi-label">Conformidade Geral</div>
+            </div>
+            <div class="mini-kpis">
+              <div class="mini-kpi"><div class="val green">99.2%</div><div class="lbl">Conformidade</div></div>
+              <div class="mini-kpi"><div class="val blue">95%</div><div class="lbl">Amostragem</div></div>
+              <div class="mini-kpi"><div class="val" style="color:var(--text);">1500</div><div class="lbl">S/ Defeito (Yield)</div></div>
+            </div>
+            <div style="margin-top:8px;text-align:center;color:var(--text2);font-size:13px;">
+              Nível de Defeitos (PPM): <b style="color:var(--green)">98.8%</b><br>
+              Scrap Mês: <b style="color:var(--yellow)">0.8%</b>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📞 CONTATOS ÚTEIS QUALIDADE</div>
+            <div class="contact">
+              <div class="contact-avatar">R</div>
+              <div><div class="contact-name">Rafael Souza</div><div class="contact-role">Coordenador de Qualidade — ramal 401</div></div>
+            </div>
+            <div class="contact">
+              <div class="contact-avatar">A</div>
+              <div><div class="contact-name">Ana Oliveira</div><div class="contact-role">Analista de Qualidade — ramal 402</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-row">
+      <div class="status-item"><div class="dot green"></div><b>SETOR STATUS: QUALIDADE: Operacional</b></div>
+    </div>
+  </div>
+
+  <!-- LOGÍSTICA -->
+  <div class="tab-panel" id="tab-logistica">
+    <div class="content">
+      <div class="section-header">
+        <div class="sh-icon">🚚</div>
+        <h2>ABA DO SETOR: LOGÍSTICA</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">📊 VISÃO GERAL DO FLUXO ATUAL</div>
+          <div style="margin-bottom:12px;">
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Cargas Recebidas</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>Cargas Expedidas</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Disponibilidade</div>
+            </div>
+            <div class="chart-bars">
+              <div class="bar-group"><div class="bar blue" style="height:90px"></div><div class="bar yellow" style="height:70px"></div><div class="bar green" style="height:100px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:80px"></div><div class="bar yellow" style="height:85px"></div><div class="bar green" style="height:90px"></div></div>
+              <div class="bar-group"><div class="bar blue" style="height:70px"></div><div class="bar yellow" style="height:90px"></div><div class="bar green" style="height:80px"></div></div>
+            </div>
+            <div class="chart-labels"><span>14h</span><span>19h</span><span>25h</span></div>
+          </div>
+          <div class="op-item"><span class="op-dot blue"></span><span>Metas de Volume: <b>120 Pallets/Dia</b></span></div>
+          <div class="op-item"><span class="op-dot yellow"></span><span>Realizado Atual: <b>95 Pallets</b></span></div>
+          <div class="op-item"><span class="op-dot green"></span><span>Ocupação Armazém: <b>88%</b></span></div>
+          <div style="margin-top:8px;"><span class="badge green">✅ Dentro da Capacidade</span></div>
+          <div style="margin-top:16px;">
+            <div class="card-title">🚛 PRINCIPAIS CARGAS</div>
+            <div class="op-item"><span class="op-dot red"></span><span>CARGA# L123 — Distr. Norte | Expedição Crítica | <b>Paula Dias</b></span></div>
+            <div class="op-item"><span class="op-dot yellow"></span><span>CARGA# L124 — Cia Metais | Recebimento | <b>Carlos Silva</b></span></div>
+            <div class="op-item"><span class="op-dot green"></span><span>CARGA# L125 — Varejo Sul | Expedição Programada | <b>Joana Santos</b></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📢 ALERTAS E COMUNICAÇÕES LOGÍSTICA</div>
+          <div class="alert red">
+            <div class="alert-icon">🔴</div>
+            <div><div class="alert-title">CRÍTICO: FALTA DE COMPONENTES CRÍTICO (Linha 2)</div>Falta de Rolamentos C-5. Parada de produção iminente. Acionar transporte de emergência.</div>
+          </div>
+          <div class="alert yellow">
+            <div class="alert-icon">⚠️</div>
+            <div><div class="alert-title">AVISO: MANUTENÇÃO PREVENTIVA PRÓXIMA (Armazém 3)</div>Manutenção de empilhadeiras no Armazém 3 amanhã às 08:00. Impacto na Célula 2.</div>
+          </div>
+          <div class="alert green">
+            <div class="alert-icon">📋</div>
+            <div><div class="alert-title">COMUNICAÇÃO: NOVAS DIRETRIZES DE EMBALAGEM</div>Procedimentos de padronização de embalagens para exportação atualizados.</div>
+          </div>
+          <div class="alert blue">
+            <div class="alert-icon">🗓️</div>
+            <div><div class="alert-title">LEMBRETE: REUNIÃO DE PASSAGEM DE TURNO</div>Reunião de passagem de turno em 27/03 às 14:00. (confirmar presença)</div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">📈 INDICADORES CHAVE (KPIs) LOGÍSTICA</div>
+            <div style="text-align:center;margin-bottom:8px;">
+              <div class="kpi-value green" style="font-size:36px;">99.8%</div>
+              <div class="kpi-label">Acuracidade de Inventário</div>
+            </div>
+            <div class="mini-kpis">
+              <div class="mini-kpi"><div class="val green">99.8%</div><div class="lbl">Acuracidade</div></div>
+              <div class="mini-kpi"><div class="val blue">1.5</div><div class="lbl">Lead Time Exp. (dias)</div></div>
+              <div class="mini-kpi"><div class="val yellow">88%</div><div class="lbl">Ocupação Armazém</div></div>
+            </div>
+            <div style="margin-top:8px;text-align:center;color:var(--text2);font-size:13px;">
+              Produtos Sem Defeito (Yield): <b style="color:var(--green)">98.8%</b><br>
+              Scrap Mês: <b style="color:var(--yellow)">0.8%</b>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📞 CONTATOS ÚTEIS LOGÍSTICA</div>
+            <div class="contact">
+              <div class="contact-avatar">A</div>
+              <div><div class="contact-name">Ana Santos</div><div class="contact-role">Coordenadora de Logística — ramal 601</div></div>
+            </div>
+            <div class="contact">
+              <div class="contact-avatar">P</div>
+              <div><div class="contact-name">Pedro Dias</div><div class="contact-role">Analista de Logística — ramal 602</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="status-row">
+      <div class="status-item"><div class="dot green"></div><b>SETOR STATUS: LOGÍSTICA: Operacional</b></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let setorSelecionado = null;
+let notificacoesPorSetor = {
+  'pcp': [],
+  'producao': [],
+  'qualidade': [],
+  'logistica': [],
+  'dashboard': [],
+  'resumoturno': []
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarRelogio();
+  setInterval(atualizarRelogio, 1000);
+  
+  // Inicializar com notificações de exemplo
+  inicializarNotificacoes();
+});
+
+function inicializarNotificacoes() {
+  // Adicionar notificações de exemplo para demonstração
+  adicionarNotificacao('pcp', 'URGENTE', 'Matéria-prima atrasada para OP#2026-046. Previsão: 16:30', 'error', true);
+  adicionarNotificacao('qualidade', 'CRÍTICO', 'Desvio detectado no dimensional crítico da OP 4569', 'error', true);
+  adicionarNotificacao('logistica', 'URGENTE', 'Falta de Rolamentos C-5. Parada de produção iminente', 'error', true);
+  adicionarNotificacao('producao', 'AVISO', 'Manutenção preventiva agendada para amanhã às 08:00', 'warning', true);
+}
+
+function adicionarNotificacao(setor, titulo, mensagem, tipo = 'info', comResponsavel = true) {
+  const notifId = Date.now();
+  const notif = {
+    id: notifId,
+    titulo: titulo,
+    mensagem: mensagem,
+    tipo: tipo,
+    comResponsavel: comResponsavel
+  };
+  
+  if (notificacoesPorSetor[setor]) {
+    notificacoesPorSetor[setor].push(notif);
+    atualizarBadgeSetor(setor);
+    
+    // Se o usuário já está no sistema, mostrar o pop-up imediatamente
+    if (document.getElementById('sistema').style.display === 'block') {
+      mostrarNotificacao(titulo, mensagem, tipo, comResponsavel);
+    }
+  }
+}
+
+function atualizarBadgeSetor(setor) {
+  const card = document.querySelector(`[data-setor="${setor}"]`);
+  if (card) {
+    const badge = card.querySelector('.setor-badge');
+    const count = notificacoesPorSetor[setor].length;
+    
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+function acessarSetor() {
+  if (setorSelecionado) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('sistema').style.display = 'block';
+    
+    // Mostrar as notificações do setor selecionado
+    if (notificacoesPorSetor[setorSelecionado].length > 0) {
+      notificacoesPorSetor[setorSelecionado].forEach(notif => {
+        setTimeout(() => {
+          mostrarNotificacao(notif.titulo, notif.mensagem, notif.tipo, notif.comResponsavel);
+        }, 300);
+      });
+    }
+    
+    mudarAba(setorSelecionado, document.querySelector(`[onclick*="${setorSelecionado}"]`));
+  }
+}
+
+function selecionarSetor(element, setor) {
+  // Remove seleção anterior
+  document.querySelectorAll('.setor-card').forEach(card => card.classList.remove('active'));
+  
+  // Adiciona seleção ao card clicado
+  element.classList.add('active');
+  
+  // Armazena o setor selecionado
+  setorSelecionado = setor;
+  
+  // Atualiza texto
+  const nomeSetor = element.querySelector('.setor-title').textContent;
+  const notifCount = notificacoesPorSetor[setor].length;
+  const notifText = notifCount > 0 ? ` (${notifCount} notificações)` : '';
+  document.getElementById('setor-selecionado').textContent = `Setor Selecionado: ${nomeSetor}${notifText}`;
+  
+  // Habilita o botão de acesso
+  document.getElementById('btn-acesso').disabled = false;
+}
+
+function resetarSelecao() {
+  setorSelecionado = null;
+  document.querySelectorAll('.setor-card').forEach(card => card.classList.remove('active'));
+  document.getElementById('setor-selecionado').textContent = 'Nenhum setor selecionado';
+  document.getElementById('btn-acesso').disabled = true;
+}
+
+function fazerLogout() {
+  document.getElementById('sistema').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  setorSelecionado = null;
+  resetarSelecao();
+}
+
+function mudarAba(aba, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + aba).classList.add('active');
+  if (btn) btn.classList.add('active');
+  else {
+    const tabs = document.querySelectorAll('.tab');
+    for (let tab of tabs) {
+      if (tab.getAttribute('onclick').includes(aba)) {
+        tab.classList.add('active');
+        break;
+      }
+    }
+  }
+}
+
+function atualizarRelogio() {
+  const agora = new Date();
+  const opcoes = { day: '2-digit', month: 'long', year: 'numeric' };
+  const data = agora.toLocaleDateString('pt-BR', opcoes);
+  const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('relogio').textContent = data + ' | ' + hora;
+  
+  // Atualizar dados no resumo do turno se visível
+  if (document.getElementById('resumo-data')) {
+    document.getElementById('resumo-data').textContent = data;
+    document.getElementById('resumo-hora').textContent = hora;
+  }
+}
+
+// ===== SISTEMA DE NOTIFICAÇÕES =====
+function mostrarNotificacao(titulo, mensagem, tipo = 'info', comResponsavel = true) {
+  const container = document.getElementById('notification-container');
+  const id = 'notif-' + Date.now();
+  
+  const notificacao = document.createElement('div');
+  notificacao.id = id;
+  notificacao.className = `notification-popup ${tipo}`;
+  if (tipo === 'error') {
+    notificacao.classList.add('blink');
+  }
+  
+  let responsavelHTML = '';
+  if (comResponsavel) {
+    responsavelHTML = `
+      <div class="notification-responsible">
+        <label>Responsável:</label>
+        <input type="text" placeholder="Nome do responsável" class="input-responsavel">
+      </div>
+    `;
+  }
+  
+  const iconMap = {
+    'success': '✅',
+    'error': '🔴',
+    'warning': '⚠️',
+    'info': 'ℹ️'
+  };
+  
+  notificacao.innerHTML = `
+    <div class="notification-icon">${iconMap[tipo] || tipo}</div>
+    <div class="notification-content">
+      <div class="notification-title">${titulo}</div>
+      <div class="notification-message">${mensagem}</div>
+      ${responsavelHTML}
+    </div>
+    <button class="notification-close" onclick="fecharNotificacao('${id}')">✕</button>
+  `;
+  
+  container.appendChild(notificacao);
+  
+  // Auto-fechar após 8 segundos (se não tiver responsável) ou indefinidamente (se tiver)
+  if (!comResponsavel) {
+    setTimeout(() => fecharNotificacao(id), 8000);
+  }
+  
+  return id;
+}
+
+function fecharNotificacao(id) {
+  const notif = document.getElementById(id);
+  if (notif) {
+    notif.style.animation = 'slideInNotif 0.4s ease reverse';
+    setTimeout(() => notif.remove(), 400);
+  }
+}
+
+// Exemplos de notificações (pode ser acionado por eventos)
+function testarNotificacoes() {
+  setTimeout(() => {
+    mostrarNotificacao('URGENTE', 'Matéria-prima atrasada para OP#2026-046', 'error', true);
+  }, 500);
+  
+  setTimeout(() => {
+    mostrarNotificacao('Informação', 'Manutenção preventiva agendada para amanhã', 'info', false);
+  }, 2000);
+  
+  setTimeout(() => {
+    mostrarNotificacao('Aviso', 'Ocupação do armazém em 88%', 'warning', true);
+  }, 3500);
+}
+</script>
+</body>
+</html>
