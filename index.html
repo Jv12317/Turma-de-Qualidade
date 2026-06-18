@@ -834,6 +834,51 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   border-color: var(--accent);
 }
 
+.notification-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.notification-action-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-display);
+}
+
+.notification-action-btn.resolve {
+  color: var(--green);
+  border-color: var(--green);
+  background: rgba(0,214,143,0.05);
+}
+
+.notification-action-btn.resolve:hover {
+  background: rgba(0,214,143,0.15);
+  color: var(--green);
+}
+
+.notification-action-btn.dismiss {
+  color: var(--text2);
+  border-color: var(--border);
+  background: transparent;
+}
+
+.notification-action-btn.dismiss:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
 .notification-close {
   position: absolute;
   top: 10px;
@@ -890,6 +935,46 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
 .notification-popup.info .notification-title {
   color: var(--accent);
+}
+
+/* ===== CONTROLE DE MATERIAIS ===== */
+.material-control {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg3);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.material-control input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--green);
+}
+
+.material-control label {
+  flex: 1;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.material-control input[type="checkbox"]:checked + label {
+  color: var(--green);
+}
+
+.material-status {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: rgba(107, 142, 35, 0.15);
+  color: var(--green);
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 /* ===== MEDIA QUERIES - RESPONSIVO ===== */
@@ -1566,7 +1651,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
           <div class="card">
             <div class="card-title">⚠️ PRINCIPAIS PROBLEMAS</div>
-            <div class="alert red" style="margin-bottom:8px;">
+            <div class="alert red" id="alert-dashboard-aço" style="margin-bottom:8px;">
               <div class="alert-icon">🔴</div>
               <div><div class="alert-title">Falta de Matéria-Prima</div>Lote de Aço SAE 1020 para OP 4567</div>
             </div>
@@ -1626,7 +1711,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
         <div class="card">
           <div class="card-title">📢 ALERTAS E COMUNICAÇÕES PCP</div>
-          <div class="alert red">
+          <div class="alert red" id="alert-aço-1020">
             <div class="alert-icon">🔴</div>
             <div><div class="alert-title">URGENTE: FALTA DE MATÉRIA-PRIMA (Linha B)</div>Lote de Aço SAE 1020 em falta para OP 4567. Previsão Logística: Indefinida. (acionar Compras)</div>
           </div>
@@ -1656,6 +1741,14 @@ tr:hover td { background: rgba(255,255,255,0.02); }
                 <div class="progress-label"><span>Cumprimento de Meta de Produção/Mês</span><span style="color:var(--green)">98%</span></div>
                 <div class="progress-bar"><div class="progress-fill green" style="width:98%"></div></div>
               </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">✅ CONTROLE DE DISPONIBILIDADE DE MATERIAIS</div>
+            <div class="material-control">
+              <input type="checkbox" id="material-aço-check" onchange="atualizarMaterialDisponivel(this, 'aço-1020', 'Aço SAE 1020')">
+              <label for="material-aço-check">Lote de Aço SAE 1020 Disponível</label>
+              <span class="material-status" id="status-aço-1020" style="display:none;">✓ Chegou</span>
             </div>
           </div>
           <div class="card">
@@ -1712,7 +1805,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
         <div class="card">
           <div class="card-title">📢 ALERTAS E COMUNICAÇÕES PRODUÇÃO</div>
-          <div class="alert red">
+          <div class="alert red" id="alert-rolamentos">
             <div class="alert-icon">🔴</div>
             <div><div class="alert-title">URGENTE: FALTA DE COMPONENTE CRÍTICO (Linha A)</div>Lote de Rolamentos para OP 4567 em falta. Posição de Almoxarifado: Sem Previsão. (Contatar Logística)</div>
           </div>
@@ -1797,7 +1890,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
         <div class="card">
           <div class="card-title">📢 ALERTAS E COMUNICAÇÕES QUALIDADE</div>
-          <div class="alert red">
+          <div class="alert red" id="alert-qualidade-medicao">
             <div class="alert-icon">🔴</div>
             <div><div class="alert-title">CRÍTICO: FALHA DE MEDIÇÃO — Célula 1</div>Desvio detectado no dimensional crítico da OP 4569. Parar produção e isolar lote. Contatar Engenharia e Manutenção.</div>
           </div>
@@ -1886,7 +1979,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
         <div class="card">
           <div class="card-title">📢 ALERTAS E COMUNICAÇÕES LOGÍSTICA</div>
-          <div class="alert red">
+          <div class="alert red" id="alert-logistica-rolamentos">
             <div class="alert-icon">🔴</div>
             <div><div class="alert-title">CRÍTICO: FALTA DE COMPONENTES CRÍTICO (Linha 2)</div>Falta de Rolamentos C-5. Parada de produção iminente. Acionar transporte de emergência.</div>
           </div>
@@ -1951,6 +2044,115 @@ let notificacoesPorSetor = {
   'resumoturno': []
 };
 
+// ===== SISTEMA DE NOTIFICAÇÕES RESOLVIDAS (LocalStorage) =====
+// Chave para armazenar notificações resolvidas no navegador
+const RESOLVED_NOTIF_KEY = 'resolved_notifications';
+
+function carregarNotificacoesResolvidas() {
+  const stored = localStorage.getItem(RESOLVED_NOTIF_KEY);
+  return stored ? JSON.parse(stored) : {};
+}
+
+function salvarNotificacaoResolvida(notifId, titulo, setor) {
+  const resolvidas = carregarNotificacoesResolvidas();
+  resolvidas[notifId] = {
+    titulo: titulo,
+    setor: setor,
+    dataResolucao: new Date().toLocaleString('pt-BR'),
+    timestamp: Date.now()
+  };
+  localStorage.setItem(RESOLVED_NOTIF_KEY, JSON.stringify(resolvidas));
+}
+
+function foiResolvida(notifId) {
+  const resolvidas = carregarNotificacoesResolvidas();
+  return resolvidas.hasOwnProperty(notifId);
+}
+
+function limparNotificacoesResolvidas() {
+  localStorage.setItem(RESOLVED_NOTIF_KEY, JSON.stringify({}));
+}
+
+function obterHistoricoNotificacoes() {
+  return carregarNotificacoesResolvidas();
+}
+
+function exibirHistoricoNoConsole() {
+  const historico = obterHistoricoNotificacoes();
+  if (Object.keys(historico).length === 0) {
+    console.log('📝 Nenhuma notificação foi resolvida ainda.');
+    return;
+  }
+  console.log('📋 === HISTÓRICO DE NOTIFICAÇÕES RESOLVIDAS ===');
+  Object.entries(historico).forEach(([id, dados]) => {
+    console.log(`✓ ${dados.titulo} (${dados.setor}) - ${dados.dataResolucao}`);
+  });
+  console.log(`📊 Total: ${Object.keys(historico).length} notificações resolvidas`);
+}
+
+// ===== CONTROLE DE MATERIAIS =====
+function atualizarMaterialDisponivel(checkbox, materialId, materialNome) {
+  const statusElement = document.getElementById(`status-${materialId}`);
+  
+  if (checkbox.checked) {
+    // Mostrar status "Chegou"
+    if (statusElement) {
+      statusElement.style.display = 'inline-block';
+    }
+    
+    // Procurar e atualizar a notificação relacionada
+    const containerNotif = document.getElementById('notification-container');
+    if (containerNotif) {
+      const notificacoes = containerNotif.querySelectorAll('.notification-popup');
+      notificacoes.forEach(notif => {
+        const mensagem = notif.querySelector('.notification-message');
+        // Verificar se a notificação menciona o material
+        if (mensagem && mensagem.textContent.toLowerCase().includes(materialNome.toLowerCase())) {
+          // Remover classes antigas
+          notif.classList.remove('error', 'warning', 'info', 'blink');
+          notif.classList.add('success');
+          
+          // Mudar o título para "RESOLVIDO"
+          const titleElement = notif.querySelector('.notification-title');
+          if (titleElement) {
+            titleElement.textContent = '✓ RESOLVIDO!';
+          }
+          
+          // Mudar a mensagem
+          if (mensagem) {
+            mensagem.textContent = `${materialNome} chegou! A OP pode prosseguir.`;
+          }
+          
+          // Remover os botões de ação
+          const actionsElement = notif.querySelector('.notification-actions');
+          if (actionsElement) {
+            actionsElement.style.display = 'none';
+          }
+          
+          // Mudar o ícone
+          const iconElement = notif.querySelector('.notification-icon');
+          if (iconElement) {
+            iconElement.textContent = '✅';
+          }
+          
+          // Auto-fechar após 5 segundos
+          setTimeout(() => {
+            notif.style.animation = 'slideInNotif 0.4s ease reverse';
+            setTimeout(() => notif.remove(), 400);
+          }, 5000);
+          
+          console.log(`✓ Notificação de "${materialNome}" atualizada para RESOLVIDO!`);
+        }
+      });
+    }
+  } else {
+    // Desmarcar - esconder status
+    if (statusElement) {
+      statusElement.style.display = 'none';
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   atualizarRelogio();
   setInterval(atualizarRelogio, 1000);
@@ -1964,17 +2166,25 @@ function inicializarNotificacoes() {
   adicionarNotificacao('pcp', 'URGENTE', 'Matéria-prima atrasada para OP#2026-046. Previsão: 16:30', 'error', true);
   adicionarNotificacao('qualidade', 'CRÍTICO', 'Desvio detectado no dimensional crítico da OP 4569', 'error', true);
   adicionarNotificacao('logistica', 'URGENTE', 'Falta de Rolamentos C-5. Parada de produção iminente', 'error', true);
-  adicionarNotificacao('producao', 'AVISO', 'Manutenção preventiva agendada para amanhã às 08:00', 'warning', true);
+  adicionarNotificacao('producao', 'URGENTE', 'Falta de Componente Crítico (Rolamentos) para OP 4567', 'error', true);
 }
 
 function adicionarNotificacao(setor, titulo, mensagem, tipo = 'info', comResponsavel = true) {
-  const notifId = Date.now();
+  // Criar ID único baseado no setor, título e mensagem
+  const notifId = `${setor}-${titulo}-${Date.now()}`;
+  
+  // Verificar se já foi resolvida antes
+  if (foiResolvida(notifId)) {
+    return; // Não adiciona se já foi resolvida
+  }
+  
   const notif = {
     id: notifId,
     titulo: titulo,
     mensagem: mensagem,
     tipo: tipo,
-    comResponsavel: comResponsavel
+    comResponsavel: comResponsavel,
+    dataCriacao: new Date().toLocaleString('pt-BR')
   };
   
   if (notificacoesPorSetor[setor]) {
@@ -1983,7 +2193,7 @@ function adicionarNotificacao(setor, titulo, mensagem, tipo = 'info', comRespons
     
     // Se o usuário já está no sistema, mostrar o pop-up imediatamente
     if (document.getElementById('sistema').style.display === 'block') {
-      mostrarNotificacao(titulo, mensagem, tipo, comResponsavel);
+      mostrarNotificacao(notifId, titulo, mensagem, tipo, comResponsavel);
     }
   }
 }
@@ -2011,9 +2221,12 @@ function acessarSetor() {
     // Mostrar as notificações do setor selecionado
     if (notificacoesPorSetor[setorSelecionado].length > 0) {
       notificacoesPorSetor[setorSelecionado].forEach(notif => {
-        setTimeout(() => {
-          mostrarNotificacao(notif.titulo, notif.mensagem, notif.tipo, notif.comResponsavel);
-        }, 300);
+        // Verificar se já foi resolvida
+        if (!foiResolvida(notif.id)) {
+          setTimeout(() => {
+            mostrarNotificacao(notif.id, notif.titulo, notif.mensagem, notif.tipo, notif.comResponsavel);
+          }, 300);
+        }
       });
     }
     
@@ -2086,12 +2299,13 @@ function atualizarRelogio() {
 }
 
 // ===== SISTEMA DE NOTIFICAÇÕES =====
-function mostrarNotificacao(titulo, mensagem, tipo = 'info', comResponsavel = true) {
+function mostrarNotificacao(notifId, titulo, mensagem, tipo = 'info', comResponsavel = true) {
   const container = document.getElementById('notification-container');
-  const id = 'notif-' + Date.now();
+  const htmlId = 'notif-' + Date.now();
   
   const notificacao = document.createElement('div');
-  notificacao.id = id;
+  notificacao.id = htmlId;
+  notificacao.setAttribute('data-notif-id', notifId);
   notificacao.className = `notification-popup ${tipo}`;
   if (tipo === 'error') {
     notificacao.classList.add('blink');
@@ -2120,18 +2334,161 @@ function mostrarNotificacao(titulo, mensagem, tipo = 'info', comResponsavel = tr
       <div class="notification-title">${titulo}</div>
       <div class="notification-message">${mensagem}</div>
       ${responsavelHTML}
+      <div class="notification-actions">
+        <button class="notification-action-btn resolve" onclick="resolverNotificacao('${htmlId}', '${notifId}', '${titulo}')">✓ Resolvido</button>
+        <button class="notification-action-btn dismiss" onclick="fecharNotificacao('${htmlId}')">✕ Descartar</button>
+      </div>
     </div>
-    <button class="notification-close" onclick="fecharNotificacao('${id}')">✕</button>
   `;
   
   container.appendChild(notificacao);
   
-  // Auto-fechar após 8 segundos (se não tiver responsável) ou indefinidamente (se tiver)
-  if (!comResponsavel) {
-    setTimeout(() => fecharNotificacao(id), 8000);
+  return htmlId;
+}
+
+function resolverNotificacao(htmlId, notifId, titulo) {
+  const notif = document.getElementById(htmlId);
+  
+  if (notif) {
+    const setor = setorSelecionado || 'desconhecido';
+    
+    // Marcar como resolvida no localStorage
+    salvarNotificacaoResolvida(notifId, titulo, setor);
+    
+    // Remover do array de notificações do setor
+    if (notificacoesPorSetor[setor]) {
+      notificacoesPorSetor[setor] = notificacoesPorSetor[setor].filter(n => n.id !== notifId);
+    }
+    
+    // Atualizar badge do setor
+    atualizarBadgeSetor(setor);
+    
+    // Remover alertas correspondentes
+    removerAlertasUrgentes(titulo);
+    
+    // Animar remoção
+    notif.style.animation = 'slideInNotif 0.4s ease reverse';
+    setTimeout(() => notif.remove(), 400);
+    
+    // Mostrar confirmação em verde
+    setTimeout(() => {
+      mostrarConfirmacaoResolvida(titulo);
+    }, 450);
+    
+    // Mostrar confirmação no console
+    console.log(`✓ Notificação "${titulo}" marcada como resolvida no setor "${setor}".`);
+  }
+}
+
+function resolverNotificacao(htmlId, notifId, titulo) {
+  const notif = document.getElementById(htmlId);
+  
+  if (notif) {
+    const setor = setorSelecionado || 'desconhecido';
+    
+    // Marcar como resolvida no localStorage
+    salvarNotificacaoResolvida(notifId, titulo, setor);
+    
+    // Remover do array de notificações do setor
+    if (notificacoesPorSetor[setor]) {
+      notificacoesPorSetor[setor] = notificacoesPorSetor[setor].filter(n => n.id !== notifId);
+    }
+    
+    // Atualizar badge do setor
+    atualizarBadgeSetor(setor);
+    
+    // Remover alertas APENAS do setor atual
+    removerAlertasDoSetor(titulo, setor);
+    
+    // Animar remoção
+    notif.style.animation = 'slideInNotif 0.4s ease reverse';
+    setTimeout(() => notif.remove(), 400);
+    
+    // Mostrar confirmação em verde
+    setTimeout(() => {
+      mostrarConfirmacaoResolvida(titulo);
+    }, 450);
+    
+    // Mostrar confirmação no console
+    console.log(`✓ Notificação "${titulo}" marcada como resolvida no setor "${setor}".`);
+  }
+}
+
+function removerAlertasDoSetor(titulo, setor) {
+  console.log(`🔍 Removendo alertas do setor: "${setor}" com título: "${titulo}"`);
+  
+  // Obter o painel do setor atual
+  const painelSetor = document.getElementById(`tab-${setor}`);
+  if (!painelSetor) {
+    console.log(`⚠️ Painel do setor não encontrado: tab-${setor}`);
+    return;
   }
   
-  return id;
+  // Mapa de palavras-chave para remover
+  const palavrasChave = {
+    'matéria-prima': true,
+    'aço': true,
+    'sae 1020': true,
+    'rolamentos': true,
+    'componente': true,
+    'crítico': true,
+    'medição': true,
+    'desvio': true,
+    'dimensional': true,
+    'urgente': true,
+    'falta': true
+  };
+  
+  // Verificar se o título contém palavras-chave de alerta
+  let contemPalavraChave = false;
+  for (const palavra of Object.keys(palavrasChave)) {
+    if (titulo.toLowerCase().includes(palavra.toLowerCase())) {
+      contemPalavraChave = true;
+      console.log(`✓ Encontrada palavra-chave: "${palavra}"`);
+      break;
+    }
+  }
+  
+  // Se o título tem palavra-chave de alerta, remover todos os alertas vermelhos do setor
+  if (contemPalavraChave) {
+    const alertasVermelhos = painelSetor.querySelectorAll('.alert.red');
+    console.log(`📌 Encontrados ${alertasVermelhos.length} alertas vermelhos neste setor`);
+    
+    alertasVermelhos.forEach(alerta => {
+      alerta.style.animation = 'slideInNotif 0.4s ease reverse';
+      setTimeout(() => {
+        alerta.remove();
+        console.log(`✓ Alerta vermelho removido do setor ${setor}`);
+      }, 400);
+    });
+  } else {
+    console.log(`⚠️ Notificação não tem palavra-chave de alerta`);
+  }
+}
+
+function mostrarConfirmacaoResolvida(titulo) {
+  const container = document.getElementById('notification-container');
+  const confirmId = 'confirm-' + Date.now();
+  
+  const confirmacao = document.createElement('div');
+  confirmacao.id = confirmId;
+  confirmacao.className = 'notification-popup success';
+  
+  confirmacao.innerHTML = `
+    <div class="notification-icon">✅</div>
+    <div class="notification-content">
+      <div class="notification-title">NOTIFICAÇÃO RESOLVIDA!</div>
+      <div class="notification-message">A notificação foi marcada como resolvida no setor.</div>
+    </div>
+  `;
+  
+  container.appendChild(confirmacao);
+  
+  // Auto-fechar após 4 segundos
+  setTimeout(() => {
+    confirmacao.style.animation = 'slideInNotif 0.4s ease reverse';
+    setTimeout(() => confirmacao.remove(), 400);
+  }, 4000);
 }
 
 function fecharNotificacao(id) {
@@ -2145,15 +2502,15 @@ function fecharNotificacao(id) {
 // Exemplos de notificações (pode ser acionado por eventos)
 function testarNotificacoes() {
   setTimeout(() => {
-    mostrarNotificacao('URGENTE', 'Matéria-prima atrasada para OP#2026-046', 'error', true);
+    mostrarNotificacao('test-1', 'URGENTE', 'Matéria-prima atrasada para OP#2026-046', 'error', true);
   }, 500);
   
   setTimeout(() => {
-    mostrarNotificacao('Informação', 'Manutenção preventiva agendada para amanhã', 'info', false);
+    mostrarNotificacao('test-2', 'Informação', 'Manutenção preventiva agendada para amanhã', 'info', false);
   }, 2000);
   
   setTimeout(() => {
-    mostrarNotificacao('Aviso', 'Ocupação do armazém em 88%', 'warning', true);
+    mostrarNotificacao('test-3', 'Aviso', 'Ocupação do armazém em 88%', 'warning', true);
   }, 3500);
 }
 </script>
